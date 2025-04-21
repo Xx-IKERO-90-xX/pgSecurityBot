@@ -4,7 +4,7 @@ Este bot agregará un nuevo sistema de seguridad que protegerá especialmente la
 ### Agragación
 + **Funcionalidad para la DMZ (Zona Desmilitarizada)**: <br>
 ![imagen](/img/dmz_graph.png)
-Siguiente el concepto de DMZ para securizar la red interna de la empresa, funcionará de igual forma pero para los nuevos usuarios que ingresen al servidor poniendoles a prueba su personalidad verificado si son bots, cuentas falsas o intentando ver si la persona pertenece a una de las categorias de la **Black List**.
+Siguiendo el concepto de DMZ para securizar la red interna de la empresa, funcionará de igual forma pero para los nuevos usuarios que ingresen al servidor poniendoles a prueba su personalidad verificado si son bots, cuentas falsas o intentando ver si la persona pertenece a una de las categorias de la **Black List**.
 
 ### Futuras Integracioes
 + **Bloqueo de IPs Maliciosas o Enlaces Maliciosos:** Intentar defender el servidor de discord de ataques Phishing de robo de cuentas de discord.
