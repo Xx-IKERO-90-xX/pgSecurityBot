@@ -19,7 +19,6 @@ MEMBER_ROLE_ID = 852500184662409216
 '''
 Formulario para desbloquear las opciones de usuario del servidor de discord de Pana Gaming.
 '''
-
 class DMZForm(discord.ui.Modal, title="INGRESO A PANA GAMING"):
     quest1 = discord.ui.TextInput(
         label="Pregunta 1",
@@ -82,6 +81,7 @@ class DMZForm(discord.ui.Modal, title="INGRESO A PANA GAMING"):
             await user.send(embed=confirm_embed)
             await interaction.response.defer()
 
+
 class DMZFormButton(discord.ui.View):
     @discord.ui.button(label="Abrir Formulario", style=discord.ButtonStyle.success)
     async def open_form_dmz(self, interaction: discord.Interaction, button: discord.ui.Button):
@@ -120,7 +120,7 @@ async def on_ready():
         inline=False
     )
     dmz_form_embed.add_field(
-        name="3. ¿Te has leido las normas del servidor de Pana Gaming y la biografía de esta comunidad?,¿Que opinas?",
+        name="3. ¿Te has leido las normas del servidor de Pana Gaming?, ¿Que opinas?",
         value="Pregunta 3",
         inline=False 
     )
@@ -136,9 +136,15 @@ async def on_member_join(member):
     embed = discord.Embed(
         title="👋 BIENVENIDO A PANA GAMING!",
         description="""
-            No te asustes, soy el bot asistente de la Comunidad de Pana Gaming. Estas en una comunidad totalmente única y en fase BETA que tiene grandiosos propósitos y esperamos contar contigo para que nos ayudes a hacer que esta comunidad funcione.
-            Para desbloquear las opciones de la comunidad primero deberás rellenar un formulario que lo tienes en el canal <#1363551259977584702>, lee claramente las preguntas y respondelás con toda la sinceridad del mundo ya que el Staff de Pana Gaming tendrá en cuenta todo lo que escribas.
-            Pero antes de rellenar el formulario de ingresión, visita los canales que te dejo abajo.
+        🎮✨ ¡Hola! Soy tu bot asistente de Pana Gaming. Bienvenido a una comunidad única, en constante evolución y con una visión increíble. Estás a punto de formar parte de algo especial, algo que apenas está comenzando... y tú puedes ayudarnos a construirlo. 💫
+
+        🚧 Actualmente estamos en fase BETA, y tú podrías ser una de las piezas clave para que esta comunidad crezca, mejore y llegue a ser un verdadero hogar para todos los jugadores, soñadores y creadores como tú.
+
+        📝 ¿Quieres desbloquear todas las funciones de la comunidad?
+        Solo tienes que rellenar un formulario muy importante que encontrarás en el canal <#1363551259977584702>.
+        Tómate tu tiempo, lee cada pregunta con atención y responde con total sinceridad: lo que compartas será tenido muy en cuenta por el Staff de Pana Gaming.
+
+        👀 Pero espera, antes de lanzarte al formulario, te recomendamos que explores los canales que te dejamos justo abajo. Conocerás mejor nuestra visión, nuestras normas y todo lo que hace de Pana Gaming un lugar diferente.
         """,
         color=discord.Color.green()
     )
@@ -147,12 +153,6 @@ async def on_member_join(member):
         value="<#830567020427739166>",
         inline=False
     )
-    embed.add_field(
-        name="Biografía de Pana Gaming",
-        value="<#1363593707219194167>",
-        inline=False
-    )
-
     await member.send(embed=embed)
 
 '''
