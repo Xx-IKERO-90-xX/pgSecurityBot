@@ -14,6 +14,8 @@ FORMS_OUTPUT_CHANNEL = 1363554500043870495
 # Server Roles
 USER_ROLE_ID = 1239939068905914368
 MEMBER_ROLE_ID = 852500184662409216
+STAFF_ROLE_ID = 856835937816674314
+EJECUTIVE_ROLE_ID = 889578160495140898
 
 
 
@@ -21,6 +23,9 @@ MEMBER_ROLE_ID = 852500184662409216
 Formulario para desbloquear las opciones de usuario del servidor de discord de Pana Gaming.
 '''
 class DMZForm(discord.ui.Modal, title="INGRESO A PANA GAMING"):
+    def __init__(self):
+        super().__init__(timeout=None)
+
     quest1 = discord.ui.TextInput(
         label="Pregunta 1",
         required=True,
@@ -41,8 +46,11 @@ class DMZForm(discord.ui.Modal, title="INGRESO A PANA GAMING"):
 
     async def on_submit(self, interaction: discord.Interaction):
         informes_channel = interaction.guild.get_channel(FORMS_OUTPUT_CHANNEL)
+        
         user_role = interaction.guild.get_role(USER_ROLE_ID)
         member_role = interaction.guild.get_role(MEMBER_ROLE_ID)
+        staff_role = interaction.guild.get_role(STAFF_ROLE_ID)
+        ejecutive_role = interaction.guild.get_role(EJECUTIVE_ROLE_ID)
         
         user = interaction.user
 
@@ -71,7 +79,10 @@ class DMZForm(discord.ui.Modal, title="INGRESO A PANA GAMING"):
                 inline=False 
             )
 
-            await informes_channel.send(embed=embed)
+            await informes_channel.send(
+                f"{staff_role.mention} {ejecutive_role.mention}",
+                embed=embed
+            )
             await user.add_roles(user_role, reason="Formulario de ingreso a Pana Gaming completado!!!")
         
             confirm_embed = discord.Embed(
@@ -84,6 +95,9 @@ class DMZForm(discord.ui.Modal, title="INGRESO A PANA GAMING"):
 
 
 class DMZFormButton(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+
     @discord.ui.button(label="Abrir Formulario", style=discord.ButtonStyle.success)
     async def open_form_dmz(self, interaction: discord.Interaction, button: discord.ui.Button):
         await interaction.response.send_modal(DMZForm())
