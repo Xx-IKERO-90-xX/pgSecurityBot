@@ -9,3 +9,6 @@ Siguiendo el concepto de DMZ para securizar la red interna de la empresa, funcio
 ### Futuras Integracioes
 + **Bloqueo de IPs Maliciosas o Enlaces Maliciosos:** Intentar defender el servidor de discord de ataques Phishing de robo de cuentas de discord.
 + **Inteligencia de Amenazas:** Hacer que el bot sea inteligente a la hora de reconocer una amenaza.
+
+### IMPORTANTE!!!
+Esta versión del proyecto esta solo enfocado a mi comunidad de Discord Pana Gaming pero en cuanto tengamos la primera version completa y funcionando correctamente, lanzaremos una copia de este proyecto pero enfocado al publico para que lo apliqueis a vuestros servidores y lo protejais.
