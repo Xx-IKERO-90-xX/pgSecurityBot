@@ -33,6 +33,31 @@ async def index():
         total_pages=total_pages
     )
 
+
+@app.route('/sources')
+async def sources():
+    page = request.args.get('page', 1, type=int)
+    per_page = 5
+
+    offset = (page - 1) * per_page
+
+    connection = await database.open_sqlite_connection()
+    evil_domains = connection.execute("SELECT * FROM external_sources LIMIT ? OFFSET ?", (per_page, offset)).fetchall()
+    total_domains = connection.execute("SELECT COUNT(*) FROM external_sources").fetchone()[0]
+    
+    total_pages = (total_domains + per_page - 1) // per_page
+    
+    connection.close()
+
+    return render_template(
+        "sources.jinja",
+        domains=evil_domains,
+        page=page,
+        total_domains=total_domains,
+        total_pages=total_pages
+    )
+
+
 if __name__ == '__main__':
     app.run(
         host='0.0.0.0',
