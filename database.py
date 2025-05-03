@@ -1,14 +1,14 @@
 import sqlite3
 import requests
 
-def open_sqlite_connection():
+async def open_sqlite_connection():
     connection = sqlite3.connect("database.db")
     connection.row_factory = sqlite3.Row
 
     return connection
 
-def insert_new_source(link):
-    connection = open_sqlite_connection()
+async def insert_new_source(link):
+    connection = await open_sqlite_connection()
     cursor = connection.cursor()
     
     cursor.execute(f"""
@@ -18,8 +18,8 @@ def insert_new_source(link):
 
     connection.commit()
 
-def update_evil_domains():
-    connection = open_sqlite_connection()
+async def update_evil_domains():
+    connection = await open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -44,8 +44,8 @@ def update_evil_domains():
     
     connection.close()
 
-def get_evil_domains():
-    connection = open_sqlite_connection()
+async def get_evil_domains():
+    connection = await open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -56,8 +56,8 @@ def get_evil_domains():
 
     return results
 
-def get_external_sources():
-    connection = open_sqlite_connection()
+async def get_external_sources():
+    connection = await open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -68,8 +68,8 @@ def get_external_sources():
 
     return results
 
-def delete_external_source(link):
-    connection = open_sqlite_connection()
+async def delete_external_source(link):
+    connection = await open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute(f"""

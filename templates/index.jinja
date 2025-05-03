@@ -1,0 +1,48 @@
+{%extends 'base.jinja'%}
+
+{%block title%} Inicio {%endblock%}
+
+{%block content%}
+<br><br><br>
+
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Dominios Maliciosos ({{total_domains}})
+                </th>
+                <th scope="col" class="px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for domain in domains%}
+            <tr
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{domain['domain']}}
+                </th>
+                <td class="px-6 py-4">
+                    <a href="#"
+                        class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Delete</a>
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <div class="join">
+        {% if page > 1 %}
+            <a href="{{ url_for('index', page=page-1) }}" class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">«</a>
+        {%endif%}
+        <button class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">Page {{page}}</button>
+        {%if page < total_pages %}
+            <a href="{{ url_for('index', page=page+1) }}" class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">»</a>
+        {%endif%}
+    </div>
+</div>
+
+
+{%endblock%}

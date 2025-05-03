@@ -1,0 +1,14 @@
+.navbar {
+    background-image: url(/static/img/fondoverde.jpg);
+}
+body {
+    background-image: url(/static/img/wallpaper.png);
+    background-size: auto;
+    background-attachment: fixed;
+    background-color: #000; /* Fondo de respaldo */
+    background-size: 400px ; /* Ajusta el tamaño a algo más pequeño */
+}
+.logo {
+    width: 70px;
+    border-radius: 50%;
+}
