@@ -2,43 +2,79 @@
 
 {%block title%} Fuentes Externas {%endblock%}
 
-{%block content%} 
+{%block content%}
 <br><br><br><br>
-<div class="overflow-x-auto rounded-box border border-base-content/5 bg-base-100">
-  <table class="table">
-    <!-- head -->
-    <thead>
-      <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Job</th>
-        <th>Favorite Color</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- row 1 -->
-      <tr>
-        <th>1</th>
-        <td>Cy Ganderton</td>
-        <td>Quality Control Specialist</td>
-        <td>Blue</td>
-      </tr>
-      <!-- row 2 -->
-      <tr>
-        <th>2</th>
-        <td>Hart Hagerty</td>
-        <td>Desktop Support Technician</td>
-        <td>Purple</td>
-      </tr>
-      <!-- row 3 -->
-      <tr>
-        <th>3</th>
-        <td>Brice Swyre</td>
-        <td>Tax Accountant</td>
-        <td>Red</td>
-      </tr>
-    </tbody>
-  </table>
+<div id="alerts_div">
+</div>
+<br><br><br>
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">
+                    Fuentes Externas
+                </th>
+                <th scope="col" class="px-6 py-3 text-right">
+                    <button onclick="modal_new_source.showModal()" type="button"
+                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        <strong>Agregar</strong>
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {%for source in sources%}
+            <tr
+                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <th scope="row"
+                    class="overflow-x-auto px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    {{source["link"]}}
+                </th>
+                <td class="px-6 py-4 text-right">
+                    <a href="{{url_for('delete_source', id=source['id'])}}"
+                        class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        <strong>Eliminar</strong>
+                    </a>
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+    <div class="join">
+        {% if page > 1 %}
+        <a href="{{ url_for('index', page=page-1) }}"
+            class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">«</a>
+        {%endif%}
+        <button class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">Page
+            {{page}}</button>
+        {%if page < total_pages %} <a href="{{ url_for('index', page=page+1) }}"
+            class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">»</a>
+            {%endif%}
+    </div>
 </div>
 
+<dialog id="modal_new_source" class="modal text-white">
+    <div class="modal-box bg-gray-800 shadow-lg shadow-green-500">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <form method="post" action="{{url_for('new_source')}}" id="form_add_source">
+            <h3 class="text-lg font-bold">Fuente Externa</h3>
+            <input type="text" id="new_source_input" placeholder="https://***/**.txt" name="new_source"
+                class="input input-success bg-gray-800 text-white" />
+            <button type="submit" class="btn btn-success">Añadir</button>
+        </form>
+    </div>
+</dialog>
+
+<template id="sourceErrorAlertTemplate">
+    <div id="sourceErrorAlert" role="alert" class="alert alert-error">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Error! El enlace al la fuente externa no es válido.</span>
+    </div>
+</template>
+<script type="module" src="/static/scripts/sources/add_source_validation.js"></script>
 {%endblock%}

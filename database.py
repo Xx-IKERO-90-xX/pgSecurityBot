@@ -68,13 +68,13 @@ async def get_external_sources():
 
     return results
 
-async def delete_external_source(link):
+async def delete_external_source(id):
     connection = await open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute(f"""
         DELETE FROM external_sources
-        WHERE link = '{link}'
+        WHERE id = '{id}'
     """)
 
     connection.commit()
