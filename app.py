@@ -60,12 +60,7 @@ async def sources():
 @app.route('/sources/new', methods=['POST'])
 async def new_source():
     source = request.form['new_source']
-    
-    try:
-        await database.insert_new_source(source)
-    except e:
-        print("Fallo con la subida de la nueva fuente externa")
-    
+    await database.insert_new_source(source)    
     return redirect(url_for('sources'))
 
 @app.route('/sources/delete/<int:id>', methods=["GET"])
@@ -78,7 +73,9 @@ async def reload_evil_domains():
     await database.update_evil_domains()
     return redirect(url_for('evil_domains'))
     
-
+@app.route('/alerts', methods=["GET"])
+async def alerts():
+    return render_template('alerts.jinja')
 
 if __name__ == '__main__':
     app.run(
