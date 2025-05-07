@@ -47,9 +47,10 @@
         {%endif%}
         <button class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">Page
             {{page}}</button>
-        {%if page < total_pages %} <a href="{{ url_for('index', page=page+1) }}"
-            class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">»</a>
-            {%endif%}
+        {%if page < total_pages %} 
+            <a href="{{ url_for('index', page=page+1) }}"
+                class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">»</a>
+        {%endif%}
     </div>
 </div>
 

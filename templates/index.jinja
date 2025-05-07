@@ -3,45 +3,52 @@
 {%block title%} Inicio {%endblock%}
 
 {%block content%}
-<br><br><br>
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-                <th scope="col" class="px-6 py-3">
-                    Dominios Maliciosos ({{total_domains}})
-                </th>
-                <th scope="col" class="px-6 py-3 text-left">
-                    <a href="{{url_for('reload_evil_domains')}}"
-                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
-                        <strong>Actualizar</strong>
-                    </a>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            {%for domain in domains%}
-            <tr
-                class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    {{domain['domain']}}
-                </th>
-                <td class="px-6 py-4 text-left">
-            
-                </td>
-            </tr>
-            {%endfor%}
-        </tbody>
-    </table>
-    <div class="join">
-        {% if page > 1 %}
-            <a href="{{ url_for('evil_domains', page=page-1) }}" class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">«</a>
-        {%endif%}
-        <button class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">Page {{page}}</button>
-        {%if page < total_pages %}
-            <a href="{{ url_for('evil_domains', page=page+1) }}" class="text-white dark:bg-gray-800 dark:border-gray-700 border-gray-200 join-item btn">»</a>
-        {%endif%}
+<br><br>
+<div tabindex="0" class="collapse collapse-arrow bg-gray-800 text-white shadow shadow-green-500">
+    <div class="collapse-title font-semibold flex text-yellow-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span class="ml-2">Alertas</span>
     </div>
+    <div class="collapse-content text-sm">
+        {%for alert in alerts%}
+        {%if alert['type'] == 'Warning'%}
+        <div role="alert" class="alert alert-warning alert-soft">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            <span>{{alert['message']}}</span>
+        </div>
+        {%endif%}
+        {%endfor%}
+    </div>
+</div>
+<br><br>
+<div>
+    {%for alert in alerts%}
+    {%if alert['type'] == 'Warning'%}
+    <div role="alert" class="alert alert-warning alert-soft">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+        </svg>
+        <span>{{alert['message']}}</span>
+    </div>
+    {%endif%}
+    {%if alert['type'] == 'Error'%}
+    <div role="alert" class="alert alert-error alert-soft">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>{{alert['message']}}</span>
+    </div>
+    {%endif%}
+    {%endfor%}
 </div>
 
 

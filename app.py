@@ -10,28 +10,8 @@ app.secret_key = 'fdsf435t34t3f34fw'
 
 # Página principal
 @app.route('/')
-async def evil_domains():
-    page = request.args.get('page', 1, type=int)
-    per_page = 10
-
-    offset = (page - 1) * per_page
-
-    connection = await database.open_sqlite_connection()
-    cursor = connection.cursor()
-    evil_domains = connection.execute("SELECT * FROM evil_domains LIMIT ? OFFSET ?", (per_page, offset)).fetchall()
-    total_domains = connection.execute("SELECT COUNT(*) FROM evil_domains").fetchone()[0]
-    
-    total_pages = (total_domains + per_page - 1) // per_page
-    
-    connection.close()
-
-    return render_template(
-        "index.jinja",
-        domains=evil_domains,
-        page=page,
-        total_domains=total_domains,
-        total_pages=total_pages
-    )
+async def index():
+    return render_template('index.jinja')
 
 
 @app.route('/sources')
@@ -68,14 +48,39 @@ async def delete_source(id):
     await database.delete_external_source(id)
     return redirect(url_for('sources'))
 
+
+@app.route('/evildomains')
+async def evil_domains():
+    page = request.args.get('page', 1, type=int)
+    per_page = 10
+
+    offset = (page - 1) * per_page
+
+    connection = await database.open_sqlite_connection()
+    cursor = connection.cursor()
+    evil_domains = connection.execute("SELECT * FROM evil_domains LIMIT ? OFFSET ?", (per_page, offset)).fetchall()
+    total_domains = connection.execute("SELECT COUNT(*) FROM evil_domains").fetchone()[0]
+    
+    total_pages = (total_domains + per_page - 1) // per_page
+    
+    connection.close()
+
+    return render_template(
+        "evil_domains.jinja",
+        domains=evil_domains,
+        page=page,
+        total_domains=total_domains,
+        total_pages=total_pages
+    )
+
 @app.route('/evildomains/reload', methods=["GET"])
 async def reload_evil_domains():
     await database.update_evil_domains()
     return redirect(url_for('evil_domains'))
     
-@app.route('/alerts', methods=["GET"])
-async def alerts():
-    return render_template('alerts.jinja')
+
+
+
 
 if __name__ == '__main__':
     app.run(
