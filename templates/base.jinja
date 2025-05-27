@@ -18,6 +18,7 @@
             <div class="flex-1">
                 <img class="logo" src="/static/img/logo.png">
             </div>
+            {%if session%}
             <div class="flex-none">
                 <ul class="menu menu-horizontal px-1 text-white">
                     <li><a href="{{url_for('evil_domains')}}"><strong>Dominios</strong></a></li>
@@ -25,6 +26,7 @@
                     <li><a href="{{url_for('index')}}"><strong>Inicio</strong></a></li>
                 </ul>
             </div>
+            {%endif%}
         </div>
     </header>
     <main class="container mx-auto px-4" style="height: 100vh;">

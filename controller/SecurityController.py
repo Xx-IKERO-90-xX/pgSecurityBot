@@ -15,6 +15,3 @@ async def verify_password(password: str, hashed: str) -> bool:
 
 
 ### INICIOS DE SESIÓN ###
-
-
-
