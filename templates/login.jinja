@@ -4,8 +4,8 @@
 
 {%block content%}
 
-<div class="w-full max-w-xs mx-auto mt-40" >
-    <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+<div class="w-full max-w-xs mx-auto mt-40">
+    <form class="bg-gray-900 shadow-lg shadow-green-500 rounded px-8 pt-6 pb-8 mb-4">
         <div class="mb-4">
             <label class="block text-gray-100 text-sm font-bold mb-2" for="username">
                 Username
@@ -15,7 +15,7 @@
                 id="username" type="text" name="username" placeholder="Username">
         </div>
         <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
+            <label class="block text-gray-100 text-sm font-bold mb-2" for="password">
                 Password
             </label>
             <input
@@ -23,8 +23,8 @@
                 id="password" name="passwd" type="password" placeholder="******************">
         </div>
         <div class="flex items-center justify-between text-center">
-            <button class="btn btn-success mx-auto btn-wide"><strong>Iniciar Sesión</strong></button>
+            <button type="submit" class="btn btn-success mx-auto btn-wide"><strong>Iniciar Sesión</strong></button>
         </div>
     </form> 
-
+</div>
 {%endblock%}
