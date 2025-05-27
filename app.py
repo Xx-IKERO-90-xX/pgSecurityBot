@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import controller.DatabaseController as DatabaseController
 from flask_sqlalchemy import SQLAlchemy
 import controller.AlertsController as alerts
+import controller.SecurityController as security
+import controller.UserController as users
 
 app = Flask(__name__)
 app.secret_key = 'fdsf435t34t3f34fw'
@@ -106,12 +108,30 @@ async def reload_evil_domains():
     else:
         return redirect(url_for('login'))
 
-## AUTENTIFICACIÓN
+## AUTENTICACIÓN
 @app.route('/auth/login', methods=["GET", "POST"])
 async def login():
     if request.method == "GET":
         return render_template('login.jinja')
 
+    else:
+        username = request.form['username']
+        passwd = request.form['passwd']
+
+        user = await users.get_user_by_name(username)
+
+        if await security.check_login(username, passwd):
+            session['id'] = user.id
+            session['username'] = user.username
+
+            return redirect(url_for('index'))
+
+        else:
+            error_msg = "El login ha fallado!!!"    
+            return render_template(
+                'login.jinja', 
+                error_msg=error_msg
+            )
 
 
 if __name__ == '__main__':

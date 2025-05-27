@@ -5,7 +5,7 @@
 {%block content%}
 
 <div class="w-full max-w-xs mx-auto mt-40">
-    <form class="bg-gray-900 shadow-lg shadow-green-500 rounded px-8 pt-6 pb-8 mb-4">
+    <form action="{{url_for('login')}}" class="bg-gray-900 shadow-lg shadow-green-500 rounded px-8 pt-6 pb-8 mb-4" method="post">
         <div class="mb-4">
             <label class="block text-gray-100 text-sm font-bold mb-2" for="username">
                 Username
@@ -27,4 +27,5 @@
         </div>
     </form> 
 </div>
+
 {%endblock%}
