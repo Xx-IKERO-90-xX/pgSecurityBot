@@ -6,6 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 import controller.AlertsController as alerts
 import controller.SecurityController as security
 import controller.UserController as users
+import controller.EvilDomainsController as domains
+import controller.SourcesController as sources
 
 app = Flask(__name__)
 app.secret_key = 'fdsf435t34t3f34fw'
@@ -57,7 +59,7 @@ async def sources():
 async def new_source():
     if 'id' in session:
         source = request.form['new_source']
-        await DatabaseController.insert_new_source(source)    
+        await sources.insert_new_source(source)    
         return redirect(url_for('sources'))
     
     else:
