@@ -27,6 +27,8 @@ async def index():
         return redirect(url_for('login'))
 
 
+# FUENTES EXTERNAS
+
 @app.route('/sources')
 async def sources():
     if 'id' in session:
@@ -74,6 +76,7 @@ async def delete_source(id):
     else:
         return redirect(url_for('login'))
 
+
 ## DOMINIOS MALICIOSOS
 @app.route('/evildomains')
 async def evil_domains():
@@ -103,7 +106,6 @@ async def evil_domains():
         return redirect(url_for('login'))
 
 
-
 @app.route('/evildomains/reload', methods=["GET"])
 async def reload_evil_domains():
     if 'id' in session:
@@ -112,6 +114,7 @@ async def reload_evil_domains():
     
     else:
         return redirect(url_for('login'))
+
 
 
 

@@ -16,6 +16,10 @@
                         class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
                         <strong>Actualizar</strong>
                     </a>
+                    <button onclick="insert_domain.showModal()"
+                        class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        <strong>AÑADIR</strong>
+                    </button>
                 </th>
             </tr>
         </thead>
@@ -43,6 +47,18 @@
         {%endif%}
     </div>
 </div>
+
+<dialog id="insert_domain" class="modal">
+  <div class="modal-box text-white dark:bg-gray-800">
+    <form method="dialog">
+      <button class="btn btn-sm text-white btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <form method="post" id="new_domain_form">
+        <input type="text" placeholder="evildomain.com" class="dark:bg-gray-800 input input-success" />
+        <button type="submit" class="btn btn-success">Añadir</button>
+    </form>
+  </div>
+</dialog>
 
 
 {%endblock%}
