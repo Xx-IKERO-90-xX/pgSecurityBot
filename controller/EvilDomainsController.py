@@ -1,7 +1,9 @@
 import controller.DatabaseController as database
+import requests
+import controller.AlertsController as alerts
 
 async def update_evil_domains():
-    connection = await open_sqlite_connection()
+    connection = await database.open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -34,7 +36,7 @@ async def update_evil_domains():
 
 
 async def get_evil_domains():
-    connection = await open_sqlite_connection()
+    connection = await database.open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute("""

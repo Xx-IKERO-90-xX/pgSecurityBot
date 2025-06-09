@@ -1,7 +1,7 @@
 import controller.DatabaseController as database
 
 async def insert_new_source(link):
-    connection = await open_sqlite_connection()
+    connection = await database.open_sqlite_connection()
     cursor = connection.cursor()
     
     cursor.execute(f"""
@@ -12,7 +12,7 @@ async def insert_new_source(link):
     connection.commit()
 
 async def get_external_sources():
-    connection = await open_sqlite_connection()
+    connection = await database.open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -24,7 +24,7 @@ async def get_external_sources():
     return results
 
 async def delete_external_source(id):
-    connection = await open_sqlite_connection()
+    connection = await database.open_sqlite_connection()
     cursor = connection.cursor()
 
     cursor.execute(f"""

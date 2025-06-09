@@ -68,7 +68,7 @@ async def new_source():
 @app.route('/sources/delete/<int:id>', methods=["GET"])
 async def delete_source(id):
     if 'id' in session:
-        await DatabaseController.delete_external_source(id)
+        await sources.delete_external_source(id)
         return redirect(url_for('sources'))
    
     else:
@@ -98,17 +98,22 @@ async def evil_domains():
             total_domains=total_domains,
             total_pages=total_pages
         )
+    
     else:
         return redirect(url_for('login'))
+
+
 
 @app.route('/evildomains/reload', methods=["GET"])
 async def reload_evil_domains():
     if 'id' in session:
-        await DatabaseController.update_evil_domains()
+        await domains.update_evil_domains()
         return redirect(url_for('evil_domains'))
     
     else:
         return redirect(url_for('login'))
+
+
 
 ## AUTENTICACIÓN
 @app.route('/auth/login', methods=["GET", "POST"])
@@ -122,16 +127,23 @@ async def login():
 
         user = await users.get_user_by_name(username)
 
-        if await security.check_login(username, passwd):
-            session['id'] = user.id
-            session['username'] = user.username
+        if user:
+            if await security.check_login(username, passwd):
+                session['id'] = user['id']
+                session['username'] = user['username']
 
-            return redirect(url_for('index'))
+                return redirect(url_for('index'))
 
+            else:
+                error_msg = "El login ha fallado!!!"    
+                return render_template(
+                    'login.jinja', 
+                    error_msg=error_msg
+                )
         else:
-            error_msg = "El login ha fallado!!!"    
+            error_msg = "Usuario no encontrado."
             return render_template(
-                'login.jinja', 
+                'login.jinja',
                 error_msg=error_msg
             )
 
