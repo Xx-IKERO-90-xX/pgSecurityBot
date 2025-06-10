@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.utils import *
 
 intents = discord.Intents.all()
@@ -16,7 +16,6 @@ USER_ROLE_ID = 1239939068905914368
 MEMBER_ROLE_ID = 852500184662409216
 STAFF_ROLE_ID = 856835937816674314
 EJECUTIVE_ROLE_ID = 889578160495140898
-
 
 
 '''
@@ -103,6 +102,16 @@ class DMZFormButton(discord.ui.View):
         await interaction.response.send_modal(DMZForm())
 
 
+# Define la tarea que hará el bump
+@tasks.loop(minutes=110)
+async def auto_bump():
+    channel = bot.get_channel(1363257382775296000)
+    if channel:
+        await channel.send('/bump')
+    else:
+        print("Canal no encontrado")
+
+
 '''
 Zona desmilitarizada del servidor de discord.
 ############################################################################
@@ -143,6 +152,9 @@ async def on_ready():
         embed=dmz_form_embed, 
         view=DMZFormButton()
     )
+
+
+
     
 @bot.event
 async def on_member_join(member):
