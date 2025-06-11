@@ -23,3 +23,5 @@ async def check_login(username: str, password: str) -> bool:
         return True
     else:
         return False
+
+## Prevención de una sqlinjection

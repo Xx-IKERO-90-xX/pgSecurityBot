@@ -45,4 +45,24 @@ async def get_evil_domains():
     results = [dict(fila) for fila in cursor.fetchall()]
     connection.close()
 
-    return results 
+    return results
+
+
+async def add_evil_domain(domain):
+    connection = await database.open_sqlite_connection()
+    cursor=connection.cursor()
+
+    try:
+        cursor.execute(f"""
+            INSERT INTO evil_domains (domain)
+            VALUES ('{domain}');
+        """)
+    except:
+        connection.close()
+        return "Failed"
+
+    connection.commit()
+    connection.close()
+
+    return "Ok"
+    

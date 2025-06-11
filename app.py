@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash, get_flashed_messages
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 import controller.DatabaseController as DatabaseController
@@ -78,7 +78,38 @@ async def delete_source(id):
 
 
 ## DOMINIOS MALICIOSOS
-@app.route('/evildomains')
+@app.route('/evildomains/error')
+async def evil_domains_error():
+    if 'id' in session:
+        error_msg = get_flashed_messages()
+        
+        page = request.args.get('page', 1, type=int)
+        per_page = 10
+
+        offset = (page - 1) * per_page
+
+        connection = await DatabaseController.open_sqlite_connection()
+        evil_domains = connection.execute("SELECT * FROM evil_domains LIMIT ? OFFSET ?", (per_page, offset)).fetchall()
+        total_domains = connection.execute("SELECT COUNT(*) FROM evil_domains").fetchone()[0]
+    
+        total_pages = (total_domains + per_page - 1) // per_page
+    
+        connection.close()
+
+        return render_template(
+            "evil_domains.jinja",
+            domains=evil_domains,
+            page=page,
+            total_domains=total_domains,
+            total_pages=total_pages,
+            error_msg=error_msg
+        )
+    
+    else:
+        return redirect(url_for('login'))
+
+
+@app.route('/evildomains', methods=["GET"])
 async def evil_domains():
     if 'id' in session:
         page = request.args.get('page', 1, type=int)
@@ -101,7 +132,7 @@ async def evil_domains():
             total_domains=total_domains,
             total_pages=total_pages
         )
-    
+        
     else:
         return redirect(url_for('login'))
 
@@ -111,10 +142,26 @@ async def reload_evil_domains():
     if 'id' in session:
         await domains.update_evil_domains()
         return redirect(url_for('evil_domains'))
-    
+
     else:
         return redirect(url_for('login'))
 
+
+@app.route('/evildomains/add', methods=["POST"])
+async def add_evil_domain():
+    if 'id' in session:
+        evil_domain = request.form['evildomain']
+        add_domain = await domains.add_evil_domain(evil_domain)
+
+        if add_domain == "Ok":
+            return redirect(url_for('evil_domains'))
+        
+        else:
+            flash("El dominio ya existe en la base de datos.")
+            return redirect(url_for('evil_domains_error'))
+    
+    else:
+        return redirect(url_for('login'))
 
 
 
@@ -127,14 +174,12 @@ async def login():
     else:
         username = request.form['username']
         passwd = request.form['passwd']
-
         user = await users.get_user_by_name(username)
 
         if user:
             if await security.check_login(username, passwd):
                 session['id'] = user['id']
                 session['username'] = user['username']
-
                 return redirect(url_for('index'))
 
             else:
@@ -143,6 +188,7 @@ async def login():
                     'login.jinja', 
                     error_msg=error_msg
                 )
+        
         else:
             error_msg = "Usuario no encontrado."
             return render_template(
