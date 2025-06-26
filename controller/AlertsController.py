@@ -23,5 +23,18 @@ async def insert_alert(type, message, status):
 
     connection.commit()
     connection.close()
+
+async def clear_external_sources_alerts():
+    connection = await database.open_sqlite_connection()
+    cursor = connection.cursor()
+
+    cursor.execute("""
+        DELETE FROM alerts
+        WHERE category = 'EXTERNAL_SOURCES';
+    """)
+
+    connection.commit()
+    connection.close()
+
     
 

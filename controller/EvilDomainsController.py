@@ -3,6 +3,8 @@ import requests
 import controller.AlertsController as alerts
 
 async def update_evil_domains():
+    await alerts.clear_external_sources_alerts()
+
     connection = await database.open_sqlite_connection()
     cursor = connection.cursor()
 
@@ -29,8 +31,8 @@ async def update_evil_domains():
 
             connection.commit()
         else:
-            message = f"Error: La siguiente fuente externa no funciona. ({fila['link']})"
-            await alerts.insert_alert('Error', message, None)
+            message = f"La siguiente fuente externa no funciona. ({fila['link']})"
+            await alerts.insert_alert('Error', 'EXTERNAL_SOURCES', message, None)
 
     connection.close()
 
@@ -50,7 +52,7 @@ async def get_evil_domains():
 
 async def add_evil_domain(domain):
     connection = await database.open_sqlite_connection()
-    cursor=connection.cursor()
+    cursor = connection.cursor()
 
     try:
         cursor.execute(f"""

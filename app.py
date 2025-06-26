@@ -70,7 +70,17 @@ async def new_source():
 @app.route('/sources/delete/<int:id>', methods=["GET"])
 async def delete_source(id):
     if 'id' in session:
-        await sources.delete_external_source(id)
+        connection = await DatabaseController.open_sqlite_connection()
+        cursor = connection.cursor()
+
+        cursor.execute(f"""
+            DELETE FROM external_sources
+            WHERE id = '{id}';
+        """)
+
+        connection.commit()
+        connection.close()
+
         return redirect(url_for('sources'))
    
     else:

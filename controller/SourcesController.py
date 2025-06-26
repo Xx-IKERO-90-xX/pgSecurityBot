@@ -29,7 +29,7 @@ async def delete_external_source(id):
 
     cursor.execute(f"""
         DELETE FROM external_sources
-        WHERE id = '{id}'
+        WHERE id = '{id}';
     """)
 
     connection.commit()
