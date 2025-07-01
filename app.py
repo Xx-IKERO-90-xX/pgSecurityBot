@@ -173,6 +173,11 @@ async def add_evil_domain():
     else:
         return redirect(url_for('login'))
 
+@app.route('/evildomains/filtered', methods=["GET", "POST"])
+async def filter_domains():
+    if 'id' in session:
+        text = request.form['searching']
+        
 
 
 ## AUTENTICACIÓN

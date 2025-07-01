@@ -67,4 +67,18 @@ async def add_evil_domain(domain):
     connection.close()
 
     return "Ok"
-    
+
+
+async def get_filtered_domains(text):
+    connection = await database.open_sqlite_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(f"""
+        SELECT * FROM evil_domains
+        WHERE domain LIKE %{text}%;
+    """)
+
+    results = [dict(fila) for fila in cursor.fetchall()]
+    connection.close()
+
+    return results
