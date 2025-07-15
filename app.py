@@ -177,6 +177,30 @@ async def add_evil_domain():
 async def filter_domains():
     if 'id' in session:
         text = request.form['searching']
+
+        page = request.args.get('page', 1, type=int)
+        per_page = 10
+
+        offset = (page - 1) * per_page
+
+        connection = await DatabaseController.open_sqlite_connection()
+        evil_domains = connection.execute(f"SELECT * FROM evil_domains LIMIT {per_page} OFFSET {offset} WHERE domain LIKE %{text}%").fetchall()
+        total_domains = connection.execute(f"SELECT COUNT(*) FROM evil_domains WHERE domain LIKE %{text}%").fetchone()[0]
+    
+        total_pages = (total_domains + per_page - 1) // per_page
+    
+        connection.close()
+
+        return render_template(
+            "evil_domains.jinja",
+            domains=evil_domains,
+            page=page,
+            total_domains=total_domains,
+            total_pages=total_pages
+        )
+
+    else:
+        return redirect(url_for('login'))
         
 
 
