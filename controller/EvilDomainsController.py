@@ -82,3 +82,14 @@ async def get_filtered_domains(text):
     connection.close()
 
     return results
+
+async def delete_evil_domain(domain):
+    connection = await database.open_sqlite_connection()
+    cursor = connection.cursor()
+
+    cursor.execute(f"""
+        DELETE FROM evil_domains
+        WHERE domain = '{domain}';
+    """)
+    connection.commit()
+    connection.close()

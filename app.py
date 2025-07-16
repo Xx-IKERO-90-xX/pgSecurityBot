@@ -12,8 +12,9 @@ import controller.SourcesController as sources
 app = Flask(__name__)
 app.secret_key = 'fdsf435t34t3f34fw'
 
-
-# Página principal
+###################################
+######## Página principal #########
+###################################
 @app.route('/')
 async def index():
     if 'id' in session:
@@ -26,8 +27,9 @@ async def index():
     else:
         return redirect(url_for('login'))
 
-
-# FUENTES EXTERNAS
+###############################
+##### FUENTES EXTERNAS ########
+###############################
 
 @app.route('/sources')
 async def sources():
@@ -86,8 +88,10 @@ async def delete_source(id):
     else:
         return redirect(url_for('login'))
 
+#######################################
+######### DOMINIOS MALICIOSOS #########
+#######################################
 
-## DOMINIOS MALICIOSOS
 @app.route('/evildomains/error')
 async def evil_domains_error():
     if 'id' in session:
@@ -118,7 +122,7 @@ async def evil_domains_error():
     else:
         return redirect(url_for('login'))
 
-
+# Pagina principal de los dominios maliciosos
 @app.route('/evildomains', methods=["GET"])
 async def evil_domains():
     if 'id' in session:
@@ -146,7 +150,7 @@ async def evil_domains():
     else:
         return redirect(url_for('login'))
 
-
+# Realiza las peticiones a los recursos externos para que descargue los ultimos enlaces maliciosos a la base de datos.
 @app.route('/evildomains/reload', methods=["GET"])
 async def reload_evil_domains():
     if 'id' in session:
@@ -156,7 +160,7 @@ async def reload_evil_domains():
     else:
         return redirect(url_for('login'))
 
-
+# Agrega un enlace malicioso de forma manual
 @app.route('/evildomains/add', methods=["POST"])
 async def add_evil_domain():
     if 'id' in session:
@@ -173,6 +177,7 @@ async def add_evil_domain():
     else:
         return redirect(url_for('login'))
 
+# Filtra los enlaces maliciosos
 @app.route('/evildomains/filtered', methods=["GET", "POST"])
 async def filter_domains():
     if 'id' in session:
@@ -222,10 +227,20 @@ async def filter_domains():
             return redirect(url_for('evil_domains'))
     else:
         return redirect(url_for('login'))
+
+@app.route('/evildomains/delete/<string:domain>', methods=["GET"])
+async def delete_evil_domain(domain):
+    if 'id' in session:
+        await domains.delete_evil_domain(domain)
+        return redirect(url_for('evil_domains'))
+    else:
+        return redirect(url_for('login'))
+
         
 
-
-## AUTENTICACIÓN
+#################################
+######## AUTENTICACIÓN ##########
+#################################
 @app.route('/auth/login', methods=["GET", "POST"])
 async def login():
     if request.method == "GET":
