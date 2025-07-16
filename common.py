@@ -9,18 +9,8 @@ def open_sqlite_connection():
 
     return connection
 
-passwd = 'admin123'
+passwd = input("Ingrese la clave a encriptar >> ")
 
 hash_passwd = pbkdf2_sha256.hash(passwd)
 
-connection = open_sqlite_connection()
-cursor = connection.cursor()
-
-cursor.execute(f"""
-    UPDATE users
-        set password = '{hash_passwd}' 
-    WHERE username = 'admin';   
-""")
-
-connection.commit()
-connection.close()
+print("Clave encriptada: ", hash_passwd)

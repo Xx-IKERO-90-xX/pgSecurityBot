@@ -4,7 +4,7 @@
 
 {%block content%}
 <br><br><br>
-{% if error_msg%}
+{%if error_msg%}
 <div role="alert" class="alert alert-error">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,7 +16,7 @@
 {%endif%}
 
 <div class="navbar shadow shadow-green-500 bg-gray-800 rounded-lg">
-    <form class="flex mx-auto" method="post" action="#">
+    <form class="flex mx-auto" method="post" action="{{url_for('filter_domains')}}">
         <label class="input bg-gray-700 input-success">
             <svg class="h-[1em] opacity-50 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                 <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none" stroke="currentColor">
@@ -24,7 +24,11 @@
                     <path d="m21 21-4.3-4.3"></path>
                 </g>
             </svg>
+            {%if filtered%}
+            <input type="search" name="searching" value="{{text}}" class="bg-gray-700 text-white" required placeholder="Search" />
+            {%else%}
             <input type="search" name="searching" class="bg-gray-700 text-white" required placeholder="Search" />
+            {%endif%}
         </label>
         <button type="submit" class="btn btn-success">
             <strong>Buscar</strong>
@@ -67,14 +71,27 @@
         </tbody>
     </table>
     <div class="join bg-gray-900 shadow-lg shadow-green-500">
-        {% if page > 1 %}
-        <a href="{{ url_for('evil_domains', page=page-1) }}"
-            class="text-white bg-gray-800 border-gray-700 join-item btn">«</a>
-        {%endif%}
-        <button class="text-white bg-gray-800 border-gray-700 join-item btn">Page {{page}}</button>
-        {%if page < total_pages %} <a href="{{ url_for('evil_domains', page=page+1) }}"
-            class="text-white bg-gray-800 border-gray-700 join-item btn">»</a>
+        {%if filtered%}
+            {%if page > 1%}
+                <a href="{{ url_for('filter_domains', page=page-1, searching=text) }}"
+                    class="text-white bg-gray-800 border-gray-700 join-item btn">«</a>
             {%endif%}
+            <button class="text-white bg-gray-800 border-gray-700 join-item btn">Page {{page}}</button>
+            {%if page < total_pages %} 
+                <a href="{{ url_for('filter_domains', page=page+1, searching=text) }}"
+                    class="text-white bg-gray-800 border-gray-700 join-item btn">»</a>
+            {%endif%}
+        {%else%}
+            {%if page > 1%}
+                <a href="{{ url_for('evil_domains', page=page-1) }}"
+                    class="text-white bg-gray-800 border-gray-700 join-item btn">«</a>
+            {%endif%}
+            <button class="text-white bg-gray-800 border-gray-700 join-item btn">Page {{page}}</button>
+            {%if page < total_pages %} 
+                <a href="{{ url_for('evil_domains', page=page+1) }}"
+                    class="text-white bg-gray-800 border-gray-700 join-item btn">»</a>
+            {%endif%}
+        {%endif%}
     </div>
 </div>
 

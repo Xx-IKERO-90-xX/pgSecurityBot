@@ -176,29 +176,50 @@ async def add_evil_domain():
 @app.route('/evildomains/filtered', methods=["GET", "POST"])
 async def filter_domains():
     if 'id' in session:
-        text = request.form['searching']
+        text = request.args.get('searching', None)
+        
+        if request.method == 'POST':
+            text = request.form['searching']
 
-        page = request.args.get('page', 1, type=int)
-        per_page = 10
+        if text:
+            page = request.args.get('page', 1, type=int)
+            per_page = 10
 
-        offset = (page - 1) * per_page
+            offset = (page - 1) * per_page
 
-        connection = await DatabaseController.open_sqlite_connection()
-        evil_domains = connection.execute(f"SELECT * FROM evil_domains LIMIT {per_page} OFFSET {offset} WHERE domain LIKE %{text}%").fetchall()
-        total_domains = connection.execute(f"SELECT COUNT(*) FROM evil_domains WHERE domain LIKE %{text}%").fetchone()[0]
-    
-        total_pages = (total_domains + per_page - 1) // per_page
-    
-        connection.close()
+            connection = await DatabaseController.open_sqlite_connection()
 
-        return render_template(
-            "evil_domains.jinja",
-            domains=evil_domains,
-            page=page,
-            total_domains=total_domains,
-            total_pages=total_pages
-        )
+            query_filter = """
+                SELECT * FROM evil_domains
+                WHERE domain LIKE ?
+                LIMIT ? OFFSET ?
+            """
+            params1 = (f"%{text}%", per_page, offset)
+            evil_domains = connection.execute(query_filter, params1).fetchall()
+            
+            query_total = """
+                SELECT COUNT(*) FROM evil_domains
+                WHERE domain LIKE ?
+            """
+            params2 = (f"%{text}%",)
+            total_domains = connection.execute(query_total, params2).fetchone()[0]
+        
+            total_pages = (total_domains + per_page - 1) // per_page
+        
+            connection.close()
 
+            return render_template(
+                "evil_domains.jinja",
+                domains=evil_domains,
+                page=page,
+                total_domains=total_domains,
+                total_pages=total_pages,
+                filtered=True,
+                text=text
+            )
+        
+        else:
+            return redirect(url_for('evil_domains'))
     else:
         return redirect(url_for('login'))
         
